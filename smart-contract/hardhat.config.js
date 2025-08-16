@@ -1,4 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config({path: "./env"});
+
+const PRIVATE_KEY = process.env.PRIVATE_KE;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -6,7 +9,7 @@ module.exports = {
   networks: {
     monadTestnet: {
       url: "https://testnet-rpc.monad.xyz",
-      acccounts: [safely.env.PRIVATE_KEY],
+      acccounts: [PRIVATE_KEY],
       chainId: 20143,
     },
   },
