@@ -1,22 +1,20 @@
 const hre = require("hardhat");
+require("dotenv").config();
 
-async function main(){
-    const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-    const UnlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+async function main() {
+  const wallet = new hre.ethers.Wallet(process.env.PRIVATE_KEY, hre.ethers.provider);
 
-    const lockedAmount = hre.ether.utils.parseEther("0.001");
+  console.log("Deploying contracts with account:", wallet.address);
 
-    const Lock = await hre.ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy(UnlockTime, {value: lockedAmount});
+  const Lock = await hre.ethers.getContractFactory("Lock", wallet);
+  const lock = await Lock.deploy();
 
-    await lock.deployed();
-    console.log('lock deployed to {lock address}');
+  await lock.waitForDeployment();
 
-
+  console.log("Lock contract deployed to:", await lock.getAddress());
 }
 
-main().catch((error) =>{
-    console.error(error);
-    process.exitCode = 1;
-})
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

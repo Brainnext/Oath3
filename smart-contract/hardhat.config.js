@@ -1,5 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config({path: "./env"});
+require("dotenv").config();
 
 const PRIVATE_KEY = process.env.PRIVATE_KE;
 
@@ -9,8 +9,8 @@ module.exports = {
   networks: {
     monadTestnet: {
       url: "https://testnet-rpc.monad.xyz",
-      acccounts: [PRIVATE_KEY],
-      chainId: 20143,
+      acccounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
+      chainId: 10143,
     },
   },
 };
